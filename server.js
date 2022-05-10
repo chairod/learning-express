@@ -6,6 +6,6 @@ app.get('/sayHi', (req, res) => {
 });
 
 var server = app.listen(3000, () => {
-    console.log(`Server runing on port ${server.addresss().port}`);
+    console.log(`Server runing on port ${server.address.port}`);
 });
 console.log('Last line ');
