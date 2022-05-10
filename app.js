@@ -6,7 +6,7 @@ const appRoutes = require('./public/app-routes');
 
 
 const app = express();
-const serverPort = process.env.PORT || 80;
+const serverPort = process.env.PORT || 8080;
 
 // กำหนด Static root path
 // ให้กับ Server
