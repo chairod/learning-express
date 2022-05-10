@@ -42,5 +42,5 @@ appRoutes(app).build();
 
 
 const server = app.listen(serverPort, () => {
-    console.log(`Server running on port ${server.address().port}`);
+    console.log(`[LOG] : Server running on port ${server.address().port}`);
 });
