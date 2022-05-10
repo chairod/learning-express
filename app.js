@@ -1,12 +1,12 @@
-const express = require('express');
+//const express = require('express');
 //const path = require('path');
 //const compression = require('compression');
 //const bodyParser = require('body-parser');
 //const appRoutes = require('./public/app-routes');
 
 
-const app = express();
-const serverPort = process.env.PORT || 5000;
+//const app = express();
+//const serverPort = process.env.PORT || 5000;
 
 // กำหนด Static root path
 // ให้กับ Server
@@ -37,13 +37,13 @@ const serverPort = process.env.PORT || 5000;
 
 // Build Application Route
 //appRoutes(app).build();
-app.get('/sayHi', (req, res) => {
-    res.send('Hi, Developer');
-});
+// app.get('/sayHi', (req, res) => {
+//     res.send('Hi, Developer');
+// });
 
 
+console.log('time: ' + new Date())
 
-
-const server = app.listen(serverPort, () => {
-    console.log(`[LOG] : Server running on port ${server.address().port}`);
-});
+// const server = app.listen(serverPort, () => {
+//     console.log(`[LOG] : Server running on port ${server.address().port}`);
+// });
