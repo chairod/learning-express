@@ -32,11 +32,14 @@ app.use((req, res, next) => {
 });
 
 // Http Compression
-app.use(compression());
+//app.use(compression());
 
 
 // Build Application Route
-appRoutes(app).build();
+//appRoutes(app).build();
+app.get('/sayHi', (req, res) => {
+    req.send('Hi, Developer');
+});
 
 
 
