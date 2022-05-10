@@ -1,0 +1,9 @@
+{
+    "app":{
+        "path":{
+            "tileset": "/static/images/tileset",
+            "mapJsonBk": "/static/map/backup",
+            "mapJson": "/static/map"
+        }
+    }
+}
