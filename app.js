@@ -49,8 +49,8 @@ app.use(compression());
 appRoutes(app).build();
 
 
-app.listen(serverPort, () => {
-    console.log(`Server running on port ${serverPort}`)
+const server = app.listen(process.env.PORT || 3000, () => {
+    console.log(`Server running on port ${server.address().port}`);
 });
 
 
