@@ -11,9 +11,11 @@ module.exports = () => {
                 path: path.join(__dirname, config.get('app.path.tileset'))
             },
             map:{
-                path: path.join(__dirname, config.get('app.path.mapJson')),
-                pathBk: path.join(__dirname, config.get('app.path.mapJsonBk'))
+                path: path.join(__dirname, config.get('app.path.map'))
             },
+            mapBackup:{
+                path: path.join(__dirname, config.get('app.path.mapBackup'))
+            }
         }
     };
 
@@ -47,7 +49,7 @@ module.exports = () => {
         if(undefined === fileGroupInfo)
             return '';
         
-        return `${fileGroupInfo.path}/${filename}`;
+        return filename ? `${fileGroupInfo.path}/${filename}` : fileGroupInfo.path;
     };
 
     /**
@@ -83,8 +85,23 @@ module.exports = () => {
             return false;
 
         let file = `${fileGroupInfo.path}/${targetFilename}`;
-        fileData = strHelper().getFileData(fileData);
-        fs.writeFileSync(file, Buffer.from(fileData, 'base64'), {encoding: 'base64', flag: 'w+'});
+        _this.writeFileBy(file, fileData, 'base64');
+    };
+
+
+    /**
+     * เขียนข้อมูลลงไฟล์ บันทึกไว้บน Local
+     * @param {*} file          string พาร์ทพร้อมชื่อไฟล์ ที่ต้องการเขียนลง Server
+     * @param {*} fileData      string ข้อมูลที่ต้องการเขียนลงไฟล์
+     * @param {*} fileEncoding  string base64, null
+     */
+    _this.writeFileBy = (file, fileData, fileEncoding) => {
+        if('base64' === fileEncoding){
+            fileData = strHelper().getFileData(fileData);
+            fs.writeFileSync(file, Buffer.from(fileData, 'base64'), { encoding: 'base64', flag: 'w+' });
+        }else{
+            fs.writeFileSync(file, Buffer.from(fileData), { flag: 'w+' });
+        }
     };
 
     return _this;

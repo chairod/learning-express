@@ -2,6 +2,8 @@ const fsHelper = require('./fs-helper');
 const strHelper = require('./string-helper');
 const path = require('path');
 const mime = require('mime-types');
+const responseFormatter = require('./app-response');
+const { equal } = require('assert');
 
 
 module.exports = (app) => {
@@ -60,6 +62,55 @@ module.exports = (app) => {
                 fileExt: fileExtInfo
             });
             //res.send(`data:${mimeType};base64, ${fileData}`);
+        });
+
+
+
+        // เขียนข้อมูล Map
+        // รับค่าเป็น post body x-wwww-form-urlencoded
+        // filename     string ชื่อไฟล์ของ map นามสกุลไฟล์จะเป็น .json
+        // content      string เนื้อหาของ map ไฟล์ที่ต้องการเขียนลงไป (base64)
+        // backupFlag   string Y/N, Y = เขียน backup file map เดิมไว้ก่อนแล้วค่อยทับข้อมูลใหม่ลงไป
+        app.post('/updateMap', (req, res) => {
+            if(!req.body.filename || !req.body.content){
+                res.json(new responseFormatter(403, 'Parameters filename & content are required'));
+                return;
+            }else if(!strHelper().strEndWith(req.body.filename, '.json')){
+                res.json(new responseFormatter(403, 'File extension not support, Only .json file'));
+                return;
+            }
+
+            //let jsonStr = Buffer.from(strHelper().getFileData(req.body.content), 'base64').toString('utf-8');
+            //res.send(jsonStr);
+            //res.json(JSON.parse(jsonStr));
+            //return;
+
+            // ข้อมูลไฟล์ที่ต้องการ แก้ไขเนื้อหาของไฟล์
+            const fileExt = '.json';
+            const sourceFile = fsHelper().getFileRelativePathByFileGroup('map', req.body.filename);
+            if(!fsHelper().fileExists(sourceFile, true)){
+                res.json(new responseFormatter(404, 'File not found!!'));
+                return;
+            }
+
+            // backup file เดิมไว้ก่อน
+            if(!req.body.backupFlag || req.body.backupFlag === 'Y'){
+                // อ่านเนื้อหาของไฟล์เดิม
+                const fileContents = fsHelper().readFileBase64(sourceFile, true);
+
+                // สร้างชื่อไฟล์สำหรับ backup
+                const filename = req.body.filename.replace(fileExt, '');
+                let destFile = '';
+                do{
+                    destFile = fsHelper().getFileRelativePathByFileGroup('mapBackup', filename.concat('_').concat(new Date().getTime()).concat(fileExt));
+                }while(fsHelper().fileExists(destFile));
+                
+                fsHelper().writeFileBy(destFile, fileContents, 'base64');
+            }
+
+            // ปรับปรุงข้อมูลใน json file
+            fsHelper().writeFileBy(sourceFile, req.body.content, 'base64');
+            res.json(new responseFormatter(200, ''));
         });
     };
 

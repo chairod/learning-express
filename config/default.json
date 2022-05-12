@@ -2,8 +2,11 @@
     "app":{
         "path":{
             "tileset": "/static/images/tileset",
-            "mapJsonBk": "/static/map/backup",
-            "mapJson": "/static/map"
+            "map": "/static/map",
+            "mapBackup": "/static/map/backup"
+        },
+        "secure":{
+            "simpleAuthenCode": "freewillSolution"
         }
     }
 }
